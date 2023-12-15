@@ -1,0 +1,6 @@
+.dealerCards{
+    display: flex;
+    position: absolute;
+    left: 46%;
+    top: 20%
+}

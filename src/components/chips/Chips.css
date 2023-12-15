@@ -1,0 +1,34 @@
+.chips{
+    display: flex;
+    flex-direction: column; 
+    cursor: pointer;  
+}
+
+.chips >div:hover {
+    border: 3px solid gold;
+    border-radius: 50%;
+}
+
+.chipsTwenty{
+    position: absolute;
+    top: 75%;
+    left: 2%;
+   
+}
+
+.chipsFifty{
+    position: absolute;
+    top: 80.5%;
+    left: 11%;
+}
+.chipsHundred{
+    position: absolute;
+    top: 84.9%;
+    left: 20%;
+}
+
+.chipsPass{
+    position: absolute;
+    top: 87.5%;
+    left: 29%;
+}

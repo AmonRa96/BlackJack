@@ -1,0 +1,14 @@
+.balance {
+    position: absolute;
+    bottom:1%;
+    left:89%;
+    width: 150px;
+    padding: 20px;
+    background: rgb(147,19,19);
+    background: linear-gradient(90deg, rgba(147,19,19,1) 0%, rgba(253,29,29,1) 50%, rgba(167,32,32,1) 100%);
+    border-radius: 20px;
+    color: gold;
+    border: 2px solid gold;
+    font-size: 22px;
+    font-weight: 600;
+}

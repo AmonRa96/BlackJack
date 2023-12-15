@@ -1,0 +1,44 @@
+.startModal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.optionInputs{
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.input {
+    width: 200px;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 10px;
+    margin-top: 10px;
+    background-color: rgb(223, 139, 12);
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.startButton{
+    display: flex;
+    margin-top: 10px;
+    justify-content: center;
+    padding: 10px;
+    width: 100px;
+    background: rgb(147,19,19);
+    background: linear-gradient(90deg, rgba(147,19,19,1) 0%, rgba(253,29,29,1) 50%, rgba(167,32,32,1) 100%);
+    color: gold;
+    font-size: 20px;
+    font-weight: 800;
+    border-radius: 10px;
+    border:2px solid gold;
+    cursor: pointer;
+
+
+}

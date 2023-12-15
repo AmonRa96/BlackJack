@@ -1,0 +1,38 @@
+.chooseOption{
+    position: absolute;
+    top: 86%;
+    width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    left: 44%;
+    height: 100px;
+    background: rgb(2,31,64);
+    background: linear-gradient(90deg, rgba(2,31,64,1) 0%, rgba(36,134,218,1) 35%, rgba(24,51,84,1) 100%);
+    border:2px solid gold;
+    border-radius: 20px;
+}
+
+.button{
+    padding: 5px;
+    background: rgb(4,163,9);
+    background: linear-gradient(90deg, rgba(4,163,9,1) 0%, rgba(29,127,253,1) 50%, rgba(11,75,37,1) 100%);
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    border: 5px solid gold;
+    cursor: pointer;
+}
+
+.buttonInfo{
+    margin-top: 3px;
+    padding: 5px;
+    background-color: green;
+    border: 1px solid rgb(1, 60, 1);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: gold;
+cursor: auto;}
