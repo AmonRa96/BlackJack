@@ -1,7 +1,9 @@
+import { useSelector } from "react-redux";
 import "./Balance.css";
 
-export const Balance = ({balance}) => {
+export const Balance = () => {
+  const {startChipsCount} = useSelector((state)=>state.cardsSlice)
   return (
-    <div className="balance">Balance: {balance}</div>
+    <div className="balance">Balance: {startChipsCount}</div>
   );
 };

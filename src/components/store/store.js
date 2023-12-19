@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import cardsDataSlice from "./cardsDataClice";
+import cardsDataSlice from "./cardsDataSlice";
 
 export default configureStore({
   reducer: {

@@ -238,44 +238,24 @@ export const cards = [
     id:48,
     point: 10,
     img: "king_of_spades2.png"
-  },
+  }, 
   {
-    id:45,
-    point: 10,
-    img: "king_of_clubs2.png"
-  },
-  {
-    id:46,
-    point: 10,
-    img: "king_of_diamonds2.png"
-  },
-  {
-    id:47,
-    point: 10,
-    img: "king_of_hearts2.png"
-  },
-  {
-    id:48,
-    point: 10,
-    img: "king_of_spades2.png"
-  },
-  {
-    id:45,
+    id:49,
     point: 11,
     img: "ace_of_clubs.png"
   },
   {
-    id:46,
+    id:50,
     point: 11,
     img: "ace_of_diamonds.png"
   },
   {
-    id:47,
+    id:51,
     point: 11,
     img: "ace_of_hearts.png"
   },
   {
-    id:48,
+    id:52,
     point: 11,
     img: "ace_of_spades.png"
   },

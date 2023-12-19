@@ -1,33 +1,26 @@
 module.exports = {
-  "env": {
-    "browser": true,
-    "es2021": true
+  env: {
+    browser: true,
+    es2021: true,
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended"
-  ],
-  "overrides": [
+  extends: ["eslint:recommended", "plugin:react/recommended"],
+  overrides: [
     {
-      "env": {
-        "node": true
+      env: {
+        node: true,
       },
-      "files": [
-        ".eslintrc.{js,cjs}"
-      ],
-      "parserOptions": {
-        "sourceType": "script"
-      }
-    }
+      files: [".eslintrc.{js,cjs}"],
+      parserOptions: {
+        sourceType: "script",
+      },
+    },
   ],
-  "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module"
+  parserOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
   },
-  "plugins": [
-    "react"
-  ],
-  "rules": {
+  plugins: ["react"],
+  rules: {
     "import/prefer-default-export": "off",
     "linebreak-style": 0,
     // 'react/button-has-type': [disable],
@@ -53,10 +46,10 @@ module.exports = {
     "react/no-unsafe": 0,
     "react/prop-types": 0,
     "react/require-render-return": 2,
-    "quotes": ["error", "double",{ "allowTemplateLiterals": true }],
-    "indent":["warn",2],
-    "semi":["warn","always"],
-    "global-require": 0 
-
-  }
+    "quotes": ["error", "double", { "allowTemplateLiterals": true }],
+    "indent": ["warn", 2],
+    "semi": ["warn", "always"],
+    "global-require": 0,
+    "no-dupe-keys": 0,
+  },
 };

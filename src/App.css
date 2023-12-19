@@ -55,3 +55,12 @@
   color:  rgba(117, 8, 3, 0.382);
 
 }
+
+.winnerModal{
+  margin-top: 60px;
+  font-size: 50px;
+  color: gold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

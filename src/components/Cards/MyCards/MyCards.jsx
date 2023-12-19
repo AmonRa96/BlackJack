@@ -10,10 +10,7 @@ export const MyCards = ({ myCards }) => {
     <div className="myCards">
       {myCards.map(({id,img},index)=>{
         return(
-          
           <Card key={id} src={img} index={index}/>
-          
-          
         );
       })}
     </div>

@@ -1,17 +1,19 @@
 import { useState } from "react";
 import "./StartOptions.css";
+import { useDispatch } from "react-redux";
+import { setBetModal,setStartName,setStartChips } from "../store/cardsDataSlice";
 
-export const StartOptions = ({setStartOptions,setShowModal,setBetModal}) =>{
+export const StartOptions = ({setShowModal}) =>{
+  // const {startName,startChipsCount} = useSelector((state)=>state.cardsSlice)
   const [name,setName] = useState("Jack");
   const [chipsCount,setChipsCount] = useState("100");
+  const dispatch = useDispatch();
 
-  const handleStart = () =>{
-    setStartOptions({
-      name,
-      chipsCount
-    });
+  const handleStart = () =>{   
+    dispatch(setStartName(name));
+    dispatch(setStartChips(chipsCount));
     setShowModal(false);
-    setBetModal(true);
+    dispatch(setBetModal(true));
   };
 
 

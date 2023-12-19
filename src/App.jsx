@@ -11,48 +11,87 @@ import { Bet } from "./components/Bet/Bet";
 import { ChooseOption } from "./components/chooseOption/ChooseOption";
 import { HouseRules } from "./components/houseRules/HouseRules";
 import { useDispatch, useSelector } from "react-redux";
-import { shuffleData } from "./components/store/cardsDataClice";
-
+import {
+  shuffleData,
+  setMyCardsSum,
+  setDealerCardsSum,
+  setWinner,
+  setBetModal,
+  setGameStarted,
+  setDealerPlay,
+  setDealerCardsEndPoint,
+  addDealerCard,
+  addChips
+} from "./components/store/cardsDataSlice";
 
 export const App = () => {
-const cards = useSelector((state)=>state.cardsSlice.cardsData);
-console.log(cards,"cccc")
+  const { gameStarted,betModal,cards,winner, dealerCards, myCards, myCardsSum, dealerCardsSum,dealerPlay,dealerCardsEndPoint } =
+    useSelector((state) => state.cardsSlice);
 
-  const [showModal, setShowModal] = useState(false);
-  const [startOptions, setStartOptions] = useState({
-    name: "Person",
-    chipsCount: 100,
-  });
-  const [gameStarted, setGameStarted] = useState(false);
-  const [betModal,setBetModal] = useState(false);
-  const [bet,setBet] = useState(20);
+  const [winnerModal, setWinnerModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);  
+  const [bet, setBet] = useState(20);
   const handleShowModal = (e) => {
     e.preventDefault();
     setShowModal(true);
   };
   const dispatch = useDispatch();
 
-useEffect(()=>{
-  dispatch(shuffleData(cards))
-},[])
+  useEffect(() => {
+    dispatch(shuffleData(cards));
+    dispatch(setDealerPlay(false));
+    dispatch(setDealerCardsEndPoint(28));
+  }, [gameStarted,betModal]);
 
+  useEffect(() => {
+    dispatch(setMyCardsSum());
+  }, [myCards]);
+  useEffect(() => {
+    dispatch(setDealerCardsSum());
+  }, [dealerCards]);
 
-  const myCards = cards.slice(0,2);
-  const points = myCards.map((obj=>obj.point));
-  const sum = points.reduce((point,aggr)=>{
-    return point +aggr;
-  },0);
+  useEffect(()=>{
+    //if point is more than 21----------------------------------------------
+    if(myCardsSum>21||dealerCardsSum===21){
+      dispatch(setWinner("Dealer win!!!"));
+      setWinnerModal(true);
+      setTimeout(()=>{
+        setWinnerModal(false);
+        dispatch(setBetModal(true));  
+        dispatch(setGameStarted(false));   
+      },3000);    
+    }else if(dealerCardsSum>21||myCardsSum===21){
+      dispatch(setWinner("Yow win!!!"));      
+      dispatch(addChips(bet));
+      setWinnerModal(true);
+      setTimeout(()=>{
+        setWinnerModal(false);
+        dispatch(setBetModal(true));  
+        dispatch(setGameStarted(false));   
+      },3000);  
+    }
+    if(dealerPlay){
+      if(dealerCardsSum<myCardsSum){       
+        setTimeout(()=>{
+          dispatch(addDealerCard(dealerCardsEndPoint));
+        },1000);    
+      }   
+      if(dealerCardsSum>myCardsSum&&dealerCardsSum<=21||dealerCardsSum===myCardsSum){
+        dispatch(setWinner("Dealer win!!!"));
+        setWinnerModal(true);
+        setTimeout(()=>{
+          setWinnerModal(false);
+          dispatch(setBetModal(true));  
+          dispatch(setGameStarted(false));   
+        },3000); 
+      }  
+    }
+  },[myCardsSum,dealerCardsSum,winnerModal,dealerPlay]);
 
-  const dealerCards = cards.slice(26,28);
-  const dPoints = dealerCards.map((obj=>obj.point));
-  const dSum = dPoints.reduce((point,aggr)=>{
-    return point +aggr;
-  },0);
-
-
-
-
-  
+console.log({
+winner,betModal,gameStarted,winnerModal,
+})
+// console.log(startOptions.chipsCount,"chips")
   return (
     <div
       className="App"
@@ -61,41 +100,48 @@ useEffect(()=>{
         backgroundSize: "100% 100%",
       }}
     >
-      <HouseRules/>
-      { !showModal&&!betModal&&!gameStarted?
-        (
-          <button className="sitButton" onClick={handleShowModal}>
+      <HouseRules />
+      {!showModal && !betModal && !gameStarted ? (
+        <button className="sitButton" onClick={handleShowModal}>
           Sit
-          </button>
-        ): null}
+        </button>
+      ) : null}
       {showModal ? (
         <Modal setShowModal={setShowModal} width={600}>
           <StartOptions
             setShowModal={setShowModal}
-            setStartOptions={setStartOptions}
-            setBetModal={setBetModal}
           />
         </Modal>
       ) : null}
-      {betModal?(
+      {betModal ? (
         <div>
-          <Chips bet={bet} setBet={setBet} clickDisable={false}/> 
-          <Bet bet={bet} setBet={setBet} setGameStarted={setGameStarted} setBetModal={setBetModal} startOptions={startOptions} setStartOptions={setStartOptions}/>
-          <Balance balance={startOptions.chipsCount}/>
+          <Chips bet={bet} setBet={setBet} clickDisable={false} />
+          <Bet
+            bet={bet}
+            setBet={setBet} 
+           
+            setShowModal={setShowModal}
+          />
+          <Balance/>
         </div>
-      )
-        :null
-      }
+      ) : null}
       {gameStarted ? (
         <div>
-          <Chips bet={bet} setBet={setBet} clickDisable={true}/>
-          <div className="sum">{sum}</div>
+          {winnerModal?
+            <Modal closeButton={false}>
+              <div className="winnerModal">
+                {winner}
+              </div>
+            
+            </Modal>
+            :null}
+          <Chips bet={bet} setBet={setBet} clickDisable={true} />
+          <div className="sum">{myCardsSum}</div>
           <MyCards myCards={myCards} />
-          <div className="dSum">{dSum}</div> 
-          <DealerCards dealerCards={dealerCards}/> 
-          <Balance balance={startOptions.chipsCount}/>
-          <ChooseOption/>
-          
+          <div className="dSum">{dealerCardsSum}</div>
+          <DealerCards dealerCards={dealerCards} />
+          <Balance/>
+          <ChooseOption gameStarted={gameStarted} setWinnerModal={setWinnerModal} />
         </div>
       ) : null}
     </div>
