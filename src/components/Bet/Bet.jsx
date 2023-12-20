@@ -4,12 +4,15 @@ import { useDispatch } from "react-redux";
 import {setGameStarted,setBetModal,reduceChips,setBet} from "../store/cardsDataSlice";
 import { useSelector } from "react-redux";
 import {NOT_ENOUGH_CHIPS,MINIMAL_BET} from "../constant";
+import useSound from "use-sound";
+import shuffleSound from "../sounds/shufflingCardS.mp3";
 
 export const Bet = ({setWinnerModal,setShowModal}) => {
   const {startChipsCount,bet} = useSelector((state)=> state.cardsSlice);
 
   const[error, setError] = useState(false);
   const[minimalChipsError, setMinimalChipsError] = useState(false);
+  const [shufflingSound] = useSound(shuffleSound);
 
   const dispatch = useDispatch();
 
@@ -19,12 +22,16 @@ export const Bet = ({setWinnerModal,setShowModal}) => {
   },[]);
 
   const handleSubmit = () => {
-    if(startChipsCount-bet>=0){
-      dispatch(reduceChips(bet));   
-      dispatch(setGameStarted(true));
-      dispatch(setBetModal(false));    
-    }
+    shufflingSound();
    
+    if(startChipsCount-bet>=0){
+      setTimeout(()=>{ 
+        dispatch( setGameStarted(true));
+        dispatch(setBetModal(false));
+        dispatch(reduceChips(bet));
+      },200);
+     
+    }     
     if(startChipsCount-bet<0){
       dispatch(setBet(0));
       setError(true);

@@ -16,7 +16,6 @@ export const Chips = ({clickDisable }) =>{
   const [oneChipSound] = useSound(sound);
   const [cancelChipsSound] = useSound(cancelChips);
   const dispatch = useDispatch();
-console.log(bet+20,"ffff")
   const handleClick20 = () =>{
     oneChipSound();
     dispatch(setBet(bet+20));

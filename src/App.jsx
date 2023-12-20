@@ -11,6 +11,12 @@ import { Bet } from "./components/Bet/Bet";
 import { ChooseOption } from "./components/chooseOption/ChooseOption";
 import { HouseRules } from "./components/houseRules/HouseRules";
 import { useDispatch, useSelector } from "react-redux";
+import useSound from "use-sound";
+import blackJackSound from "./components/sounds/blackJack.mp3";
+
+
+
+
 import {
   shuffleData,
   setMyCardsSum,
@@ -24,11 +30,13 @@ import {
   addChips,
   enableDealerFirstCard,
   setBetDoubled,
+  setHitClicked,
 } from "./components/store/cardsDataSlice";
 
 export const App = () => {
-  const { gameStarted,betModal,doubleBet,bet,firstDealerCardDisable,cards,winner, dealerCards, myCards, myCardsSum, dealerCardsSum,dealerPlay,dealerCardsEndPoint } =
+  const { hitClicked,gameStarted,betModal,doubleBet,bet,firstDealerCardDisable,cards,winner, dealerCards, myCards, myCardsSum, dealerCardsSum,dealerPlay,dealerCardsEndPoint } =
     useSelector((state) => state.cardsSlice);
+  const [blackJack] = useSound(blackJackSound);
 
   const [winnerModal, setWinnerModal] = useState(false);
   const [showModal, setShowModal] = useState(false);  
@@ -38,12 +46,13 @@ export const App = () => {
   };
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect(() => {  
     dispatch(shuffleData(cards));
     dispatch(setDealerPlay(false));
     dispatch(setDealerCardsEndPoint(28));
     dispatch(enableDealerFirstCard(true));
     dispatch(setBetDoubled(false));
+    dispatch(setHitClicked(false));
   }, [gameStarted,betModal]);
 
   useEffect(() => {
@@ -54,6 +63,21 @@ export const App = () => {
   }, [dealerCards]); 
 
   useEffect(()=>{
+    if(myCardsSum===21&&!hitClicked){
+      blackJack();
+      dispatch(setWinner("Black Jack!!!"));      
+      dispatch(addChips(3.5*bet));
+      setWinnerModal(true);
+      setTimeout(()=>{
+        setWinnerModal(false);
+        dispatch(setBetModal(true));  
+        dispatch(setGameStarted(false));   
+      },2000);  
+    }
+  },[hitClicked,myCardsSum]);
+
+
+  useEffect(()=>{  
     if(myCardsSum>21){
       dispatch(setWinner("Dealer win!!!"));
       setWinnerModal(true);
@@ -73,7 +97,7 @@ export const App = () => {
           dispatch(setGameStarted(false));   
         },2000);    
       }
-      if(dealerCardsSum>21||myCardsSum===21){
+      if(dealerCardsSum>21){
         dispatch(setWinner("Yow win!!!"));
         if(doubleBet){
           dispatch(addChips(4*bet));
@@ -147,7 +171,7 @@ export const App = () => {
             :null}
           <Chips clickDisable={true} />
           <div className="sum">{myCardsSum}</div>
-          <MyCards myCards={myCards} />
+          <MyCards myCards={myCards} setWinnerModal={setWinnerModal}/>
           <div className="dSum">{firstDealerCardDisable? dealerCards[1].point:dealerCardsSum}</div>
           <DealerCards dealerCards={dealerCards} />
           <Balance/>

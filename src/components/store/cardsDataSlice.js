@@ -19,7 +19,8 @@ const cardsDataSlice = createSlice({
     winner: "",
     dealerPlay: false,
     dealerCardsEndPoint: 28,
-    doubleBet: false
+    doubleBet: false,
+    hitClicked: false
   },
   reducers: {
     setStartName: (state,{payload}) =>{
@@ -35,6 +36,9 @@ const cardsDataSlice = createSlice({
     }, 
     hitCard: (state)=>{
       state.myCards.push(state.cards[state.myCards.length]);
+    },
+    setHitClicked: (state,{payload}) =>{
+      state.hitClicked = payload;
     },
     setMyCardsSum: (state) =>{
       state.myCardsSum =  state.myCards.map((obj=>obj.point)).reduce((point,aggr)=>{
@@ -82,7 +86,7 @@ const cardsDataSlice = createSlice({
   },
 });
 
-export const { setBet,shuffleData,hitCard,setMyCardsSum,setDealerCardsSum,setGameStarted,setBetModal,addDealerCard,setWinner,setDealerPlay,setDealerCardsEndPoint,setStartName,setStartChips,addChips,reduceChips,enableDealerFirstCard, setBetDoubled } =  cardsDataSlice.actions;
+export const { setBet,shuffleData,hitCard,setHitClicked,setMyCardsSum,setDealerCardsSum,setGameStarted,setBetModal,addDealerCard,setWinner,setDealerPlay,setDealerCardsEndPoint,setStartName,setStartChips,addChips,reduceChips,enableDealerFirstCard, setBetDoubled } =  cardsDataSlice.actions;
 export default cardsDataSlice.reducer;
 
 

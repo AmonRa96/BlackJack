@@ -2,9 +2,8 @@
 import "./MyCards.css";
 import { Card } from "../Card/Card";
 
+
 export const MyCards = ({ myCards }) => {
-
-
 
   return(
     <div className="myCards">
