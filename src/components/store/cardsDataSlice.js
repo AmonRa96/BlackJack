@@ -2,12 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 import { cards } from "../data";
 import { shuffleArray } from "../../utils";
 
-
 const cardsDataSlice = createSlice({
   name: "cardsData",
   initialState: {
     name: "",
-    startChipsCount: 100,
+    startChipsCount: null,
+    firstDealerCardDisable: true,
+    bet:20,
     gameStarted: false,
     betModal: false,
     cards: cards,
@@ -17,11 +18,16 @@ const cardsDataSlice = createSlice({
     dealerCardsSum: 0,
     winner: "",
     dealerPlay: false,
-    dealerCardsEndPoint: 28
-
-    
+    dealerCardsEndPoint: 28,
+    doubleBet: false
   },
   reducers: {
+    setStartName: (state,{payload}) =>{
+      state.name = payload;
+    },
+    setStartChips: (state,{payload}) =>{
+      state.startChipsCount = payload;
+    },
     shuffleData: (state) =>{
       shuffleArray(state.cards);
       state.myCards=state.cards.slice(0,2);
@@ -49,39 +55,34 @@ const cardsDataSlice = createSlice({
     setDealerPlay: (state,{payload}) =>{
       state.dealerPlay = payload;
     },
-    addDealerCard: (state,{payload}) =>{
-      
-      state.dealerCards.push(state.cards[payload]);  
-      state.dealerCardsEndPoint= payload+1; 
-    },
-    setWinner: (state,{payload}) =>{
-      state.winner= payload;
-    },
     setDealerCardsEndPoint: (state, {payload}) =>{
       state.dealerCardsEndPoint=payload;
     },
-    setStartChips: (state,{payload}) =>{
-      state.startChipsCount = payload;
-    },
-    setStartName: (state,{payload}) =>{
-      state.name = payload;
-    },
-    addChips: (state,{payload}) =>{
-      state.startChipsCount = state.startChipsCount+payload;
-    },
+    addDealerCard: (state,{payload}) =>{      
+      state.dealerCards.push(state.cards[payload]);  
+      state.dealerCardsEndPoint= payload+1; 
+    },   
+    addChips: (state) =>{
+      state.startChipsCount = state.startChipsCount+2*state.bet;
+    },  
     reduceChips: (state,{payload}) =>{
       state.startChipsCount = state.startChipsCount-payload;
-
-    }
-
-  
+    },     
+    enableDealerFirstCard: (state, {payload})=>{
+      state.firstDealerCardDisable = payload;
+    },
+    setBetDoubled: (state,{payload}) =>{
+      state.doubleBet = payload;
+    }, setBet: (state,{payload}) =>{
+      state.bet = payload;
+    }, 
+    setWinner: (state,{payload}) =>{
+      state.winner= payload;
+    },  
   },
 });
 
-export const { shuffleData,hitCard,setMyCardsSum,setDealerCardsSum,setGameStarted,setBetModal,addDealerCard,setWinner,setDealerPlay,setDealerCardsEndPoint,setStartName,setStartChips,addChips,reduceChips } =  cardsDataSlice.actions;
+export const { setBet,shuffleData,hitCard,setMyCardsSum,setDealerCardsSum,setGameStarted,setBetModal,addDealerCard,setWinner,setDealerPlay,setDealerCardsEndPoint,setStartName,setStartChips,addChips,reduceChips,enableDealerFirstCard, setBetDoubled } =  cardsDataSlice.actions;
 export default cardsDataSlice.reducer;
 
 
-//state.dealerCards.push(state.cards[(state.dealerCards[length-1]).id+1]);
-//  console.log(payload,"payload");
-//console.log(current(state.dealerCards[state.dealerCards.length-1]),"yyyy")

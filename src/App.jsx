@@ -21,16 +21,17 @@ import {
   setDealerPlay,
   setDealerCardsEndPoint,
   addDealerCard,
-  addChips
+  addChips,
+  enableDealerFirstCard,
+  setBetDoubled,
 } from "./components/store/cardsDataSlice";
 
 export const App = () => {
-  const { gameStarted,betModal,cards,winner, dealerCards, myCards, myCardsSum, dealerCardsSum,dealerPlay,dealerCardsEndPoint } =
+  const { gameStarted,betModal,doubleBet,bet,firstDealerCardDisable,cards,winner, dealerCards, myCards, myCardsSum, dealerCardsSum,dealerPlay,dealerCardsEndPoint } =
     useSelector((state) => state.cardsSlice);
 
   const [winnerModal, setWinnerModal] = useState(false);
   const [showModal, setShowModal] = useState(false);  
-  const [bet, setBet] = useState(20);
   const handleShowModal = (e) => {
     e.preventDefault();
     setShowModal(true);
@@ -41,6 +42,8 @@ export const App = () => {
     dispatch(shuffleData(cards));
     dispatch(setDealerPlay(false));
     dispatch(setDealerCardsEndPoint(28));
+    dispatch(enableDealerFirstCard(true));
+    dispatch(setBetDoubled(false));
   }, [gameStarted,betModal]);
 
   useEffect(() => {
@@ -48,29 +51,41 @@ export const App = () => {
   }, [myCards]);
   useEffect(() => {
     dispatch(setDealerCardsSum());
-  }, [dealerCards]);
+  }, [dealerCards]); 
 
   useEffect(()=>{
-    //if point is more than 21----------------------------------------------
-    if(myCardsSum>21||dealerCardsSum===21){
+    if(myCardsSum>21){
       dispatch(setWinner("Dealer win!!!"));
       setWinnerModal(true);
       setTimeout(()=>{
         setWinnerModal(false);
         dispatch(setBetModal(true));  
         dispatch(setGameStarted(false));   
-      },3000);    
-    }else if(dealerCardsSum>21||myCardsSum===21){
-      dispatch(setWinner("Yow win!!!"));      
-      dispatch(addChips(bet));
-      setWinnerModal(true);
-      setTimeout(()=>{
-        setWinnerModal(false);
-        dispatch(setBetModal(true));  
-        dispatch(setGameStarted(false));   
-      },3000);  
+      },2000);  
     }
     if(dealerPlay){
+      if(myCardsSum>21||dealerCardsSum===21){
+        dispatch(setWinner("Dealer win!!!"));
+        setWinnerModal(true);
+        setTimeout(()=>{
+          setWinnerModal(false);
+          dispatch(setBetModal(true));  
+          dispatch(setGameStarted(false));   
+        },2000);    
+      }
+      if(dealerCardsSum>21||myCardsSum===21){
+        dispatch(setWinner("Yow win!!!"));
+        if(doubleBet){
+          dispatch(addChips(4*bet));
+        }      
+        dispatch(addChips(2*bet));
+        setWinnerModal(true);
+        setTimeout(()=>{
+          setWinnerModal(false);
+          dispatch(setBetModal(true));  
+          dispatch(setGameStarted(false));   
+        },2000);  
+      }
       if(dealerCardsSum<myCardsSum){       
         setTimeout(()=>{
           dispatch(addDealerCard(dealerCardsEndPoint));
@@ -82,16 +97,12 @@ export const App = () => {
         setTimeout(()=>{
           setWinnerModal(false);
           dispatch(setBetModal(true));  
-          dispatch(setGameStarted(false));   
-        },3000); 
+          dispatch(setGameStarted(false));    
+        },2000); 
       }  
     }
-  },[myCardsSum,dealerCardsSum,winnerModal,dealerPlay]);
+  },[dealerPlay,myCardsSum,dealerCardsSum,doubleBet]);
 
-console.log({
-winner,betModal,gameStarted,winnerModal,
-})
-// console.log(startOptions.chipsCount,"chips")
   return (
     <div
       className="App"
@@ -110,16 +121,15 @@ winner,betModal,gameStarted,winnerModal,
         <Modal setShowModal={setShowModal} width={600}>
           <StartOptions
             setShowModal={setShowModal}
+            setWinnerModal={setWinnerModal}
           />
         </Modal>
       ) : null}
       {betModal ? (
         <div>
-          <Chips bet={bet} setBet={setBet} clickDisable={false} />
-          <Bet
-            bet={bet}
-            setBet={setBet} 
-           
+          <Chips  clickDisable={false} />
+          <Bet            
+            setWinnerModal={setWinnerModal}
             setShowModal={setShowModal}
           />
           <Balance/>
@@ -135,10 +145,10 @@ winner,betModal,gameStarted,winnerModal,
             
             </Modal>
             :null}
-          <Chips bet={bet} setBet={setBet} clickDisable={true} />
+          <Chips clickDisable={true} />
           <div className="sum">{myCardsSum}</div>
           <MyCards myCards={myCards} />
-          <div className="dSum">{dealerCardsSum}</div>
+          <div className="dSum">{firstDealerCardDisable? dealerCards[1].point:dealerCardsSum}</div>
           <DealerCards dealerCards={dealerCards} />
           <Balance/>
           <ChooseOption gameStarted={gameStarted} setWinnerModal={setWinnerModal} />

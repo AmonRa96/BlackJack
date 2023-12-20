@@ -7,27 +7,31 @@ import "./Chips.css";
 import useSound from "use-sound";
 import sound from "../sounds/chipSound.mp3";
 import cancelChips from "../sounds/cancelChips.mp3";
+import { useDispatch, useSelector } from "react-redux";
+import { setBet } from "../store/cardsDataSlice";
 
 
-export const Chips = ({ bet,setBet,clickDisable }) =>{
+export const Chips = ({clickDisable }) =>{
+  const {bet} = useSelector((state)=>state.cardsSlice)
   const [oneChipSound] = useSound(sound);
   const [cancelChipsSound] = useSound(cancelChips);
-
+  const dispatch = useDispatch();
+console.log(bet+20,"ffff")
   const handleClick20 = () =>{
     oneChipSound();
-    setBet(bet+20);
+    dispatch(setBet(bet+20));
   };
   const handleClick50 = () =>{
     oneChipSound();
-    setBet(bet+50);
+    dispatch(setBet(bet+50));
   };
   const handleClick100 = () =>{
     oneChipSound();
-    setBet(bet+100);
+    dispatch(setBet(bet+100));
   };
   const handleClick0 = () =>{
     cancelChipsSound();
-    setBet(0);
+    dispatch(setBet(0));
   };
 
   return (
