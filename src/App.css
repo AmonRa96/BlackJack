@@ -5,6 +5,17 @@
   position: relative;
 }
 
+.mainButton{
+  background: rgb(2,31,64);
+background: linear-gradient(90deg, rgba(2,31,64,1) 0%, rgba(36,134,218,1) 35%, rgba(24,51,84,1) 100%);
+}
+
+.mainButton:hover{
+  background: rgb(147,19,19);
+  background: linear-gradient(90deg, rgba(147,19,19,1) 0%, rgba(253,29,29,1) 50%, rgba(167,32,32,1) 100%);
+}
+
+
 .sum{
   padding: 10px;
   background-color: aliceblue;
@@ -63,4 +74,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.menuButton {
+  position: absolute;
+  padding: 10px;
+  background: none;
+  border: 5px solid black;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.menuButton:hover{
+  background: rgb(147,19,19);
+  background: linear-gradient(90deg, rgba(147,19,19,1) 0%, rgba(253,29,29,1) 50%, rgba(167,32,32,1) 100%);
 }

@@ -7,7 +7,7 @@ import {NOT_ENOUGH_CHIPS,MINIMAL_BET} from "../constant";
 import useSound from "use-sound";
 import shuffleSound from "../sounds/shufflingCardS.mp3";
 
-export const Bet = ({setWinnerModal,setShowModal}) => {
+export const Bet = ({setWinnerModal,setShowModal,effectsSound}) => {
   const {startChipsCount,bet} = useSelector((state)=> state.cardsSlice);
 
   const[error, setError] = useState(false);
@@ -22,7 +22,7 @@ export const Bet = ({setWinnerModal,setShowModal}) => {
   },[]);
 
   const handleSubmit = () => {
-    shufflingSound();
+    effectsSound?shufflingSound():null
    
     if(startChipsCount-bet>=0){
       setTimeout(()=>{ 
@@ -52,17 +52,31 @@ export const Bet = ({setWinnerModal,setShowModal}) => {
     setWinnerModal(false);
   };
 
+  return(
 
-  return (
-    <div className="bet">
-      <span className="betHeader">Place your bet:</span>
-      <input className="input" type="number" value={bet} onChange={(e)=>dispatch(setBet(+e.target.value))}/>
-      {error?<span className="error">{NOT_ENOUGH_CHIPS}</span>:null}
-      {minimalChipsError?<span className="error">{MINIMAL_BET}</span>:null}
-      {startChipsCount===0?
-        <button className="startButton" onClick={handleNewGame}>New game</button>
-        :<button className="startButton" onClick={handleSubmit}>Start</button>
+    <div className="bet"> 
+      {startChipsCount===0?       
+        (
+          <>
+            <span className="betHeader">You loose!!!</span>
+            <button className="startButton" onClick={handleNewGame}>New game</button>
+          </>
+        )
+        :
+        (
+          <>
+            <span className="betHeader">Place your bet:</span>
+            <input className="input" type="number" value={bet} onChange={(e)=>dispatch(setBet(+e.target.value))}/>
+            {error?<span className="error">{NOT_ENOUGH_CHIPS}</span>:null}
+            {minimalChipsError?<span className="error">{MINIMAL_BET}</span>:null}
+            <button className="startButton" onClick={handleSubmit}>Start</button>
+          </>
+        )
       }
+    
+    
+    
     </div>
-  );
+
+  );  
 };

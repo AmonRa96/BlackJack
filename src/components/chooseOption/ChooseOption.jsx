@@ -4,12 +4,17 @@ import hit from "../assets/buttons/hit.png";
 import stand from "../assets/buttons/stand.png";
 import { useDispatch, useSelector } from "react-redux";
 import { hitCard, setDealerPlay,enableDealerFirstCard, setBet, reduceChips,setBetDoubled, setHitClicked } from "../store/cardsDataSlice";
+import useSound from "use-sound";
+import hitSound from "../sounds/hit.mp3";
 
-export const ChooseOption = () => {
+export const ChooseOption = ({effectsSound}) => {
   const {bet,startChipsCount} = useSelector((state)=>state.cardsSlice);
+  const [hitting] = useSound(hitSound);
   const dispatch = useDispatch();
   
   const handleClick = () => {
+    effectsSound? hitting():null;
+
     dispatch(hitCard());  
     dispatch(setHitClicked(true));  
   };
@@ -20,6 +25,7 @@ export const ChooseOption = () => {
   };
 
   const handleDouble = () => {
+    effectsSound? hitting():null;
     if(startChipsCount-bet>=0){
       dispatch(setBet(bet));
       dispatch(reduceChips(bet));
