@@ -12,22 +12,26 @@ import { setBet } from "../store/cardsDataSlice";
 
 
 export const Chips = ({clickDisable }) =>{
-  const {bet} = useSelector((state)=>state.cardsSlice)
+  const {bet} = useSelector((state)=>state.cardsSlice);
   const [oneChipSound] = useSound(sound);
   const [cancelChipsSound] = useSound(cancelChips);
   const dispatch = useDispatch();
+
   const handleClick20 = () =>{
     oneChipSound();
     dispatch(setBet(bet+20));
   };
+
   const handleClick50 = () =>{
     oneChipSound();
     dispatch(setBet(bet+50));
   };
+
   const handleClick100 = () =>{
     oneChipSound();
     dispatch(setBet(bet+100));
   };
+  
   const handleClick0 = () =>{
     cancelChipsSound();
     dispatch(setBet(0));

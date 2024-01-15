@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import background from "./components/assets/table.png";
 import newGame from "./components/assets/buttons/newGame.png";
-
 import { Modal } from "./components/Modal/Modal";
 import { StartOptions } from "./components/startOptions/StartOptions";
 import { Chips } from "./components/chips/Chips";
@@ -32,15 +31,32 @@ import {
   enableDealerFirstCard,
   setBetDoubled,
   setHitClicked,
+  setEffectsSound,
 } from "./components/store/cardsDataSlice";
 import { Settings } from "./components/settings/Settings";
+import sound from "./components/sounds/the-best-jazz-club-in-new-orleans-164472.mp3";
 
 export const App = () => {
-  const { hitClicked,gameStarted,betModal,doubleBet,bet,firstDealerCardDisable,cards,winner, dealerCards, myCards, myCardsSum, dealerCardsSum,dealerPlay,dealerCardsEndPoint } =
-    useSelector((state) => state.cardsSlice);
+  const {
+    hitClicked,
+    volumePoint,
+    effectsSound,
+    gameStarted,
+    betModal,
+    doubleBet,
+    bet,
+    firstDealerCardDisable,
+    cards,
+    winner,
+    dealerCards,
+    myCards,
+    myCardsSum,
+    dealerCardsSum,
+    dealerPlay,
+    dealerCardsEndPoint
+  }
+   = useSelector((state) => state.cardsSlice);
 
-
-  const [effectsSound,setEffectsSound] = useState(true);
   const [winnerModal, setWinnerModal] = useState(false);
   const [showModal, setShowModal] = useState(false); 
   const [showSettingsModal,setShowSettingsModal] = useState(false);
@@ -50,7 +66,9 @@ export const App = () => {
   const [hitting] = useSound(hitSound);
   const [win] = useSound(winSound);
   const [lose] = useSound(loseSound);
-
+  const [mus,{stop}] = useSound(sound,{volume:volumePoint});
+  const musicSetting = localStorage.getItem("musicSetting");
+  const effectSoundSetting = localStorage.getItem("effectSoundSetting");
 
   const handleShowModal = (e) => {
     e.preventDefault();
@@ -58,8 +76,13 @@ export const App = () => {
   };
   const dispatch = useDispatch(); 
 
- 
+  useEffect(()=>{
+    musicSetting? mus() : stop();    //but it doesn't work because  chrome blocks autoplay
+  },[]);
 
+  useEffect(()=>{
+    effectSoundSetting?dispatch(setEffectsSound(true)):dispatch(setEffectsSound(false));
+  },[effectSoundSetting]);
 
   useEffect(() => { 
     dispatch(shuffleData(cards));
@@ -74,12 +97,11 @@ export const App = () => {
   useEffect(() => {
     dispatch(setMyCardsSum());
   }, [myCards]);
+
   useEffect(() => {
     dispatch(setDealerCardsSum());
   }, [dealerCards]); 
-
-
-
+  
   useEffect(()=>{  
     if(myCardsSum===21&&!hitClicked){
       effectsSound? blackJack():()=>{};
@@ -161,10 +183,9 @@ export const App = () => {
       }}
     >   
       <button className="menuButton" onClick={showSettings}><img src={newGame} alt="new" width="40px"/></button>   
-
       {showSettingsModal?
         <Modal setShowModal={setShowSettingsModal} width={600} height={450}>
-          <Settings setShowModal={setShowModal}  effectsSound={effectsSound} setEffectsSound={setEffectsSound}/>
+          <Settings setShowModal={setShowModal} mus={mus} stop={stop} setShowSettingsModal={setShowSettingsModal}/>
         </Modal>
         :
         null  
@@ -188,8 +209,7 @@ export const App = () => {
           <Chips  clickDisable={false} />
           <Bet            
             setWinnerModal={setWinnerModal}
-            setShowModal={setShowModal}
-            effectsSound={effectsSound}
+            setShowModal={setShowModal}            
           />
           <Balance/>
         </div>

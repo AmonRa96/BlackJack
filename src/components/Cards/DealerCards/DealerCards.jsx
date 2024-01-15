@@ -9,11 +9,8 @@ export const DealerCards = ({ dealerCards }) => {
   return(
     <div className="dealerCards">
       {dealerCards.map(({id,img},index)=>{
-        return(
-          
-          <Card key={id} src={img} index={index} firstDealerCardDisable={firstDealerCardDisable}/>
-          
-          
+        return(          
+          <Card key={id} src={img} index={index} firstDealerCardDisable={firstDealerCardDisable}/>   
         );
       })}
     </div>

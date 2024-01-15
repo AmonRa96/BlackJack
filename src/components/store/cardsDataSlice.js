@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { cards } from "../data";
 import { shuffleArray } from "../../utils";
 
+const musicSetting = localStorage.getItem("musicSetting");
+
 const cardsDataSlice = createSlice({
   name: "cardsData",
   initialState: {
@@ -21,7 +23,9 @@ const cardsDataSlice = createSlice({
     dealerCardsEndPoint: 28,
     doubleBet: false,
     hitClicked: false,  
-    volumeOn:false
+    musicOn:musicSetting?true:false,
+    effectsSound:true,
+    volumePoint: 0.5,
   },
   reducers: {
     setStartName: (state,{payload}) =>{
@@ -84,15 +88,21 @@ const cardsDataSlice = createSlice({
     setWinner: (state,{payload}) =>{
       state.winner= payload;
     }, 
-    setVolumeOn: (state,{payload})=>{
-      state.volumeOn = payload
+    setMusicOn: (state,{payload})=>{
+      state.musicOn = payload;
+    },
+    setEffectsSound: (state,{payload})=>{
+      state.effectsSound = payload;
+    },
+    setVolumePoint: (state,{payload})=>{
+      state.volumePoint = payload;
     }
    
     
   },
 });
 
-export const { setBet,shuffleData,hitCard,setVolumeOn,setHitClicked,setMyCardsSum,setDealerCardsSum,setGameStarted,setBetModal,addDealerCard,setWinner,setDealerPlay,setDealerCardsEndPoint,setStartName,setStartChips,addChips,reduceChips,enableDealerFirstCard, setBetDoubled } =  cardsDataSlice.actions;
+export const { setBet,shuffleData,hitCard,setVolumePoint,setMusicOn,setEffectsSound,setHitClicked,setMyCardsSum,setDealerCardsSum,setGameStarted,setBetModal,addDealerCard,setWinner,setDealerPlay,setDealerCardsEndPoint,setStartName,setStartChips,addChips,reduceChips,enableDealerFirstCard, setBetDoubled } =  cardsDataSlice.actions;
 export default cardsDataSlice.reducer;
 
 

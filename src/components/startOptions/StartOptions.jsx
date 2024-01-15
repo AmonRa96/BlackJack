@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import "./StartOptions.css";
 import { useDispatch } from "react-redux";
 import { setBetModal,setStartName,setStartChips } from "../store/cardsDataSlice";
@@ -6,11 +6,7 @@ import { setBetModal,setStartName,setStartChips } from "../store/cardsDataSlice"
 export const StartOptions = ({setShowModal,setWinnerModal}) =>{
   const [name,setName] = useState("Jack");
   const [chipsCount,setChipsCount] = useState("100");
-
-  useEffect(()=>{
-    
-  },[]);
-
+  
   const dispatch = useDispatch();
 
   const handleStart = () =>{   

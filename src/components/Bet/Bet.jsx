@@ -7,8 +7,8 @@ import {NOT_ENOUGH_CHIPS,MINIMAL_BET} from "../constant";
 import useSound from "use-sound";
 import shuffleSound from "../sounds/shufflingCardS.mp3";
 
-export const Bet = ({setWinnerModal,setShowModal,effectsSound}) => {
-  const {startChipsCount,bet} = useSelector((state)=> state.cardsSlice);
+export const Bet = ({setWinnerModal,setShowModal}) => {
+  const {startChipsCount,bet,effectsSound} = useSelector((state)=> state.cardsSlice);
 
   const[error, setError] = useState(false);
   const[minimalChipsError, setMinimalChipsError] = useState(false);
@@ -22,7 +22,7 @@ export const Bet = ({setWinnerModal,setShowModal,effectsSound}) => {
   },[]);
 
   const handleSubmit = () => {
-    effectsSound?shufflingSound():null
+    effectsSound?shufflingSound():null;
    
     if(startChipsCount-bet>=0){
       setTimeout(()=>{ 

@@ -32,9 +32,7 @@ export const ChooseOption = ({effectsSound}) => {
       dispatch(hitCard());
       dispatch(setBetDoubled(true));}
   };
-
-
-
+  
   return (
     <div className="chooseOption">
       <div onClick={handleClick}>
